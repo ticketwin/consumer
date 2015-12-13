@@ -1,6 +1,7 @@
 module.exports = angular.module("controllers:home", [])
-.controller("HomeController", function() {
-  console.log("Home Controller!");
+.controller("HomeController", function(Home) {
+  var vm = this;
+  vm.users = Home.get();
 })
 .config(function($stateProvider) {
   $stateProvider
