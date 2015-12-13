@@ -12,6 +12,7 @@ var watchify = require("watchify");
 var source = require("vinyl-source-stream");
 var buffer = require("vinyl-buffer");
 var sourcemaps = require("gulp-sourcemaps");
+var KarmaServer = require("karma").Server;
 
 function browserifyBundler(setup) {
   var opts = {
@@ -90,5 +91,12 @@ gulp.task("js:watch", browserifyBundler({
   output: "app.js",
   dest: "./dist/js/"
 }));
+
+gulp.task("karma", function (done) {
+  new KarmaServer({
+    configFile: __dirname + "/karma.conf.js",
+    singleRun: false
+  }, done).start();
+});
 
 gulp.task("watch", ["html:watch", "sass:watch", "js:watch"]);
