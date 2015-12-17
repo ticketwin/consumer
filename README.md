@@ -41,7 +41,7 @@
 
     _Protip: run `npm install & say done` for an audible cue when everything is finished_
 
-## Run
+### Run
 
 * **Start gulp watch task**
 
