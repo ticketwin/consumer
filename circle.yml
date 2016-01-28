@@ -2,10 +2,18 @@ machine:
   node:
     version:
       4.1.1
+
+dependencies:
+  pre:
+    - npm install gulp -g
+
 test:
   pre:
     - npm start:
         background: true
+    - gulp js
+    - gulp sass
+    - gulp html
     - npm protractor-server:
         background: true
     - sleep 5
