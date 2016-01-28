@@ -4,7 +4,7 @@ dependencies:
 
 test:
   pre:
-    - gulp js
+    - gulp js:watch
     - gulp sass
     - gulp html
     - npm start:
