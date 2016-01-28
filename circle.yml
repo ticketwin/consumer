@@ -4,6 +4,8 @@ machine:
       4.1.1
 test:
   pre:
+    - npm start:
+        background: true
     - npm protractor-server:
         background: true
     - sleep 5
