@@ -1,0 +1,12 @@
+machine:
+  node:
+    version:
+      4.1.1
+test:
+  pre:
+    - npm protractor-server:
+        background: true
+    - sleep 5
+  override:
+    - npm run test-karma
+    - npm run test-protractor
