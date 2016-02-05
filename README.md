@@ -1,3 +1,7 @@
+# Consumer
+
+[![Circle CI](https://circleci.com/gh/ticketwin/consumer/tree/master.svg?style=svg&circle-token=661d80241f4594e36df1356f64d4e5cabc2427ad)](https://circleci.com/gh/ticketwin/consumer/tree/master)
+
 ## Setup
 
 ### NVM (Node Version Manager)
