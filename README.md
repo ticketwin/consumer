@@ -47,9 +47,21 @@
 
 ### Run
 
-* **Start gulp watch task**
+* **Watch for changes to HTML, Sass, or JS files**
 
     `gulp watch`
+
+* **Start and run Karma**
+
+    `npm run test`
+
+* **Start Protractor**
+
+    `npm run protractor-server`
+
+* **Run E2E Tests**
+
+    `npm run test-protractor`
 
 * **Start app**
 
