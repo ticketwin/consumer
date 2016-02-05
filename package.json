@@ -8,6 +8,7 @@
     "test": "karma start",
     "test-karma": "karma start --single-run",
     "test-protractor": "protractor protractor.conf.js",
+    "selenium-install": "./node_modules/protractor/bin/webdriver-manager update",
     "protractor-server": "webdriver-manager start"
   },
   "author": "",
@@ -20,6 +21,7 @@
     "browserify": "^12.0.1",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.2.0",
+    "dotenv": "^2.0.0",
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
@@ -37,6 +39,7 @@
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6",
     "lodash": "^3.10.1",
+    "node-sass": "^3.4.2",
     "protractor": "^3.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",

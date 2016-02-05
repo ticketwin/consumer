@@ -81,10 +81,25 @@ gulp.task("html:watch", function() {
 });
 
 gulp.task("js", function() {
-  return gulp.src(["./app/*.js", "./app/**/*.js"])
-    .pipe(concat("app.js"))
+  var b = browserify({
+    entries: "./app/app.js",
+    debug: true,
+    transform: [jadeify]
+  });
+
+  return b.bundle()
+    .pipe(source("app.js"))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest("./dist/js/"));
 });
+
+//gulp.task("js", function() {
+  //return gulp.src(["./app/*.js", "./app/**/*.js"])
+    //.pipe(concat("app.js"))
+    //.pipe(gulp.dest("./dist/js/"));
+//});
 
 gulp.task("js:watch", browserifyBundler({
   input: "./app/app.js",
