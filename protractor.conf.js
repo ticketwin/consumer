@@ -3,9 +3,12 @@ var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 
 exports.config = {
-  seleniumAddress: "http://localhost:4444/wd/hub",
   specs: [
     "app/**/*.e2e.js"
+  ],
+  multiCapabilities: [
+    { "browserName": "chrome" },
+    { "browserName": "firefox" }
   ],
   onPrepare: function() {
     expect = chai.expect;
