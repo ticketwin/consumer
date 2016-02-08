@@ -16,7 +16,7 @@
 
 * **Install latest Node.js**
 
-    `nvm install stable`
+    `nvm install 4.1.1`
 
 ### Nodemon
 
