@@ -1,6 +1,7 @@
 function twNavbar() {
   function twNavbarCtrl() {
-    console.log("twNavbarCtrl!");
+    var vm = this;
+    //vm.isAuthenticated = false;
   }
 
   function link($scope, $element, $attrs, $ctrl) {
