@@ -1,0 +1,39 @@
+//Guest
+nav.navbar.navbar-full.navbar-light.tw-navbar(ng-if="!vm.isAuthenticated")
+  .container
+    button.navbar-toggler.hidden-sm-up(type="button" data-toggle="collapse" data-target="#tw-navbar") &#9776;
+
+    .collapse.navbar-toggleable-xs#tw-navbar
+      a.navbar-brand(href="#") TicketWin
+      ul.nav.navbar-nav.pull-xs-right
+        li.nav-item
+          a.nav-link(href="#") Contact
+        li.nav-item
+          a.nav-link(href="#") Events
+        li.nav-item
+          a.nav-link(href="#") Sign in
+        li.nav-item
+          a.nav-link(href="#") Sign up
+        li.nav-item
+          button.btn.btn-success New Event
+
+//Logged in
+nav.navbar.navbar-full.navbar-light.tw-navbar(ng-if="vm.isAuthenticated")
+  .container
+    button.navbar-toggler.hidden-sm-up(type="button" data-toggle="collapse" data-target="#tw-navbar") &#9776;
+
+    .collapse.navbar-toggleable-xs#tw-navbar
+      a.navbar-brand(href="#") TicketWin
+      ul.nav.navbar-nav.pull-xs-right
+        li.nav-item
+          a.nav-link(href="#") Contact
+        li.nav-item
+          a.nav-link(href="#") Events
+        li.nav-item
+          a.nav-link(href="#") Edit your account
+        li.nav-item
+          a.nav-link(href="#") Sign out
+        li.nav-item
+          button.btn.btn-danger Manage Events
+        li.nav-item
+          button.btn.btn-success New Event

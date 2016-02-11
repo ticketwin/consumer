@@ -58,7 +58,9 @@ gulp.task("sass", function() {
 });
 
 gulp.task("sass:watch", function() {
-  watch("./app/*.scss", function() {
+  watch(["./app/*.scss",
+         "./app/**/*.scss",
+         "./app/**/**/*.scss"], function() {
     gulp.src("./app/app.scss")
       .pipe(sass())
       .pipe(gulp.dest("./dist/css/"));
