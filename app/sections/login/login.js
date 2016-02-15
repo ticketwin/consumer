@@ -1,6 +1,13 @@
 module.exports = angular.module("controllers:login", [])
-.controller("LoginController", function() {
+.controller("LoginController", function(Sessions) {
   console.log("Login Controller!");
+  var vm = this;
+
+  vm.login = function() {
+    Sessions.create(vm.user).then(function(result) {
+      console.log("result ", result);
+    });
+  };
 })
 .config(function($stateProvider) {
   $stateProvider
