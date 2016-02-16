@@ -1,7 +1,6 @@
 module.exports = angular.module("api:sessions", [])
 .factory("Sessions", function($http) {
-  var API = "http://localhost:3000/";
-  //var API = "http://api.tcktwn.dev:3000/";
+  var API = "http://api.tcktwn.dev:3000/";
   var payload = {};
 
   var Sessions = {};

@@ -15,8 +15,7 @@ describe("Sessions Service", function() {
   });
 
   describe("create", function() {
-    var url = "http://localhost:3000/sessions";
-    //var url = "http://api.tcktwn.dev:3000";
+    var url = "http://api.tcktwn.dev:3000/sessions";
     var result;
     var sessionsResponse;
 
