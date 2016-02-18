@@ -9,12 +9,9 @@ module.exports = angular.module("api:sessions", [])
     payload.sessions = {};
     payload.sessions = data;
     return $http.post(API + "sessions", payload)
-      .then(function(response) {
-        return response.data;
-      })
-      .catch(function(response) {
-        return response.data;
-      });
+    .then(function(response) {
+      return response.data;
+    });
   };
 
   return Sessions;
