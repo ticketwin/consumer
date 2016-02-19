@@ -1,13 +1,20 @@
 describe("Sessions Service", function() {
-  var SessionsFactory, httpBackend, q;
+  var SessionsFactory, httpBackend, q, $localforage;
 
   beforeEach(angular.mock.module("ticketWin"));
 
-  beforeEach(inject(function(_Sessions_, $httpBackend, $q) {
+  beforeEach(inject(function(_Sessions_, $httpBackend, $q, _$localforage_) {
     SessionsFactory = _Sessions_;
     httpBackend = $httpBackend;
     q = $q;
+    $localforage = _$localforage_;
   }));
+
+  beforeEach(function() {
+    spyOn($localforage, "get").and.callFake(function() {
+      return q.when({});
+    });
+  });
 
   it("should exist", function() {
     expect(SessionsFactory).toBeDefined();
@@ -46,9 +53,6 @@ describe("Sessions Service", function() {
       SessionsFactory.create(login)
       .then(function(response) {
         result = response;
-      })
-      .catch(function(response) {
-        result = response;
       });
       httpBackend.flush();
 
@@ -60,11 +64,15 @@ describe("Sessions Service", function() {
     it("should return an error with an invalid email or password", function() {
       var login = { email: "user@ticketwin.com", password: "wrong" };
       sessionsResponse = {
-        errors: "Invalid email or password",
+        data: {
+          errors: "Invalid email or password",
+        },
         status: 422
       };
 
-      httpBackend.whenPOST(url).respond(422, sessionsResponse);
+      httpBackend.whenPOST(url).respond(function() {
+        return [422, sessionsResponse];
+      });
 
       expect(SessionsFactory.create).not.toHaveBeenCalled();
       expect(result).toEqual({});
@@ -74,7 +82,7 @@ describe("Sessions Service", function() {
         result = response;
       })
       .catch(function(response) {
-        result = response;
+        result = response.data;
       });
       httpBackend.flush();
 
