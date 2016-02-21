@@ -1,4 +1,4 @@
-fdescribe("LoginController", function() {
+describe("LoginController", function() {
   var $controller, $scope, LoginController, $state, SessionsFactory, q, $localforage;
   var res_create = {
     users: {
