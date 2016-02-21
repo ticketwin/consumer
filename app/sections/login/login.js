@@ -2,11 +2,11 @@ module.exports = angular.module("controllers:login", [])
 .controller("LoginController", function($state, Sessions) {
   var vm = this;
 
-  vm.login = function() {
+  vm.signIn = function() {
     vm.error = "";
-    Sessions.create(vm.user)
+    Sessions.login(vm.user)
     .then(function(result) {
-      $state.go("home");
+      return $state.go("home");
     })
     .catch(function(result) {
       vm.error = result.data.errors;
