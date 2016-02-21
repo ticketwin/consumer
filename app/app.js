@@ -4,7 +4,8 @@ angular.module("ticketWin", [
   require("./sections/sections.js").name,
   require("./services/services.js").name
 ])
-.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+.config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
   $locationProvider.html5Mode(true);
   $urlRouterProvider.otherwise("/");
+  $httpProvider.interceptors.push("httpRequestInterceptor");
 });
