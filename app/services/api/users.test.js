@@ -1,6 +1,6 @@
-describe("Sessions Service", function() {
-  var SessionsFactory, httpBackend, q, $localforage, $scope;
-  var url = "http://api.tcktwn.dev:3000/sessions";
+describe("Users Service", function() {
+  var UsersFactory, httpBackend, q, $localforage, $scope;
+  var url = "http://api.tcktwn.dev:3000/users";
   var res_create = {
     users: {
       auth_token: "12345",
@@ -9,13 +9,13 @@ describe("Sessions Service", function() {
       updated_at: "2016-02-15T14:53:48.414-06:00",
       user_id:    1
     },
-    status: 200
+    status: 201
   };
 
   beforeEach(angular.mock.module("ticketWin"));
 
-  beforeEach(inject(function(_Sessions_, $httpBackend, $q, _$localforage_, $rootScope) {
-    SessionsFactory = _Sessions_;
+  beforeEach(inject(function(_Users_, $httpBackend, $q, _$localforage_, $rootScope) {
+    UsersFactory = _Users_;
     httpBackend = $httpBackend;
     q = $q;
     $localforage = _$localforage_;
@@ -29,57 +29,59 @@ describe("Sessions Service", function() {
   });
 
   it("should exist", function() {
-    expect(SessionsFactory).toBeDefined();
-    expect(SessionsFactory.create).toBeDefined();
-    expect(SessionsFactory.login).toBeDefined();
+    expect(UsersFactory).toBeDefined();
+    expect(UsersFactory.create).toBeDefined();
+    expect(UsersFactory.login).toBeDefined();
   });
 
   describe("create", function() {
     var result;
-    var sessionsResponse;
+    var usersResponse;
 
     beforeEach(function() {
       result = {};
-      sessionsResponse = {};
-      spyOn(SessionsFactory, "create").and.callThrough();
+      usersResponse = {};
+      spyOn(UsersFactory, "create").and.callThrough();
     });
 
-    it("should return an auth token with a valid email and password", function() {
-      var login = { email: "user@ticketwin.com", password: "foobar" };
+    it("should return a user and auth token with a valid account credentials ", function() {
+      var account = { email: "user@ticketwin.com", password: "foobar", password_confirmation: "foobar" };
 
-      httpBackend.whenPOST(url).respond(200, res_create);
+      httpBackend.whenPOST(url).respond(201, res_create);
 
-      expect(SessionsFactory.create).not.toHaveBeenCalled();
+      expect(UsersFactory.create).not.toHaveBeenCalled();
       expect(result).toEqual({});
 
-      SessionsFactory.create(login)
+      UsersFactory.create(account)
       .then(function(response) {
         result = response;
       });
       httpBackend.flush();
 
-      expect(SessionsFactory.create).toHaveBeenCalledWith(login);
+      expect(UsersFactory.create).toHaveBeenCalledWith(account);
       expect(result).toEqual(res_create);
-      expect(result.status).toEqual(200);
     });
 
-    it("should return an error with an invalid email or password", function() {
-      var login = { email: "user@ticketwin.com", password: "wrong" };
-      sessionsResponse = {
+    it("should return an error with passwords that don't match", function () {
+      var account = { email: "user@ticketwin.com", password: "foobar", password_confirmation: "foobar123" };
+      usersResponse = {
         data: {
-          errors: "Invalid email or password",
+          errors: [
+            "doesn't match Password",
+            "doesn't match Password"
+          ]
         },
         status: 422
       };
 
       httpBackend.whenPOST(url).respond(function() {
-        return [422, sessionsResponse];
+        return [422, usersResponse];
       });
 
-      expect(SessionsFactory.create).not.toHaveBeenCalled();
+      expect(UsersFactory.create).not.toHaveBeenCalled();
       expect(result).toEqual({});
 
-      SessionsFactory.create(login)
+      UsersFactory.create(account)
       .then(function(response) {
         result = response;
       })
@@ -88,22 +90,22 @@ describe("Sessions Service", function() {
       });
       httpBackend.flush();
 
-      expect(SessionsFactory.create).toHaveBeenCalledWith(login);
-      expect(result).toEqual(sessionsResponse);
+      expect(UsersFactory.create).toHaveBeenCalledWith(account);
+      expect(result).toEqual(usersResponse);
       expect(result.status).toEqual(422);
     });
   });
 
   describe("login", function() {
-    var user = { email: "user@ticketwin.com", password: "foobar" };
+    var account = { email: "user@ticketwin.com", password: "foobar", password_confirmation: "foobar" };
     var res_login = "TCKTWN1337";
     var deferred;
     var result;
 
     beforeEach(function() {
       deferred = q.defer();
-      spyOn(SessionsFactory, "login").and.callThrough();
-      spyOn(SessionsFactory, "create").and.callFake(function() {
+      spyOn(UsersFactory, "login").and.callThrough();
+      spyOn(UsersFactory, "create").and.callFake(function() {
         return q.when(res_create);
       });
       spyOn($localforage, "set").and.callFake(function() {
@@ -112,17 +114,17 @@ describe("Sessions Service", function() {
     });
 
     it("should resolve", function() {
-      expect(SessionsFactory.create).not.toHaveBeenCalled();
+      expect(UsersFactory.create).not.toHaveBeenCalled();
       expect($localforage.set).not.toHaveBeenCalled();
 
-      SessionsFactory.login(user)
+      UsersFactory.login(account)
       .then(function(res) {
         result = res;
       });
       deferred.resolve(res_login);
       $scope.$apply();
 
-      expect(SessionsFactory.create).toHaveBeenCalledWith(user);
+      expect(UsersFactory.create).toHaveBeenCalledWith(account);
       expect($localforage.set).toHaveBeenCalledWith("Authorization", "12345");
       expect(result).toEqual(res_login);
     });

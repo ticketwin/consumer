@@ -1,3 +1,24 @@
 .container
   .row
-    h1.col-md-4.col-md-offset-4 Signup!
+    .col-md-6.col-md-offset-3
+      form(ng-submit="vm.signUp()")
+        fieldset.form-group
+          label Email
+          input.form-control(type="text" ng-model="vm.user.email" placeholder="john@email.com")
+
+        fieldset.form-group
+          label Password
+          input.form-control(type="password" ng-model="vm.user.password" placeholder="*****")
+
+        fieldset.form-group
+          label Password Confirmation
+          input.form-control(type="password" ng-model="vm.user.password_confirmation" placeholder="*****")
+
+        fieldset.form-group
+          input.form-control(type="checkbox" ng-model="vm.terms_of_service")
+          label Terms of Service
+
+        fieldset.form-group
+          button.btn.btn-success(type="submit") Sign up
+
+        .alert.alert-danger(role="alert" ng-show="vm.error") {{vm.error}}
