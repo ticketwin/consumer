@@ -31,6 +31,7 @@ describe("Sessions Service", function() {
   it("should exist", function() {
     expect(SessionsFactory).toBeDefined();
     expect(SessionsFactory.create).toBeDefined();
+    expect(SessionsFactory.login).toBeDefined();
   });
 
   describe("create", function() {
