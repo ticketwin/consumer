@@ -1,5 +1,5 @@
 module.exports = angular.module("api:sessions", [])
-.factory("Sessions", function($http, $localforage, $q) {
+.factory("Sessions", function($http, $localforage, $q, $state) {
   var API = "http://api.tcktwn.dev:3000/";
   var payload = {};
 
@@ -27,6 +27,17 @@ module.exports = angular.module("api:sessions", [])
         return reject(err);
       });
     });
+  };
+
+  Sessions.isLoggedIn = function() {
+    return $localforage.get("Authorization")
+      .then(function(result) {
+        if (result) {
+          return result;
+        } else {
+          return $state.go("login");
+        }
+      });
   };
 
   return Sessions;

@@ -11,6 +11,7 @@ describe("Sessions Service", function() {
     },
     status: 200
   };
+  var res_localstorage = "TCKTWN1337";
 
   beforeEach(angular.mock.module("ticketWin"));
 
@@ -24,7 +25,7 @@ describe("Sessions Service", function() {
 
   beforeEach(function() {
     spyOn($localforage, "get").and.callFake(function() {
-      return q.when({});
+      return q.when(res_localstorage);
     });
   });
 
@@ -96,7 +97,6 @@ describe("Sessions Service", function() {
 
   describe("login", function() {
     var user = { email: "user@ticketwin.com", password: "foobar" };
-    var res_login = "TCKTWN1337";
     var deferred;
     var result;
 
@@ -119,12 +119,35 @@ describe("Sessions Service", function() {
       .then(function(res) {
         result = res;
       });
-      deferred.resolve(res_login);
+      deferred.resolve(res_localstorage);
       $scope.$apply();
 
       expect(SessionsFactory.create).toHaveBeenCalledWith(user);
       expect($localforage.set).toHaveBeenCalledWith("Authorization", "12345");
-      expect(result).toEqual(res_login);
+      expect(result).toEqual("TCKTWN1337");
+    });
+  });
+
+  describe("isLoggedIn", function() {
+    var result;
+
+    beforeEach(function() {
+      spyOn(SessionsFactory, "isLoggedIn").and.callThrough();
+    });
+
+    it("should return a key when a key is present", function() {
+      expect(SessionsFactory.isLoggedIn).not.toHaveBeenCalled();
+      expect($localforage.get).not.toHaveBeenCalled();
+
+      SessionsFactory.isLoggedIn()
+      .then(function(res) {
+          result = res;
+      });
+      $scope.$apply();
+
+      expect(SessionsFactory.isLoggedIn).toHaveBeenCalled();
+      expect($localforage.get).toHaveBeenCalled();
+      expect(result).toEqual("TCKTWN1337");
     });
   });
 });
