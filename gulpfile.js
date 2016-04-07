@@ -97,12 +97,6 @@ gulp.task("js", function() {
     .pipe(gulp.dest("./dist/js/"));
 });
 
-//gulp.task("js", function() {
-  //return gulp.src(["./app/*.js", "./app/**/*.js"])
-    //.pipe(concat("app.js"))
-    //.pipe(gulp.dest("./dist/js/"));
-//});
-
 gulp.task("js:watch", browserifyBundler({
   input: "./app/app.js",
   output: "app.js",
