@@ -11,7 +11,7 @@ angular.module("ticketWin", [
   $httpProvider.interceptors.push("httpRequestInterceptor");
 });
 
-},{"./components/components.js":2,"./sections/sections.js":9,"./services/services.js":19}],2:[function(require,module,exports){
+},{"./components/components.js":2,"./sections/sections.js":11,"./services/services.js":21}],2:[function(require,module,exports){
 module.exports = angular.module("ticketWin:components", [
   require("./tw-navbar/tw-navbar").name,
 ]);
@@ -26,7 +26,7 @@ var jade_interp;
 
 buf.push("<!--Guest--><nav ng-if=\"!vm.isAuthenticated\" class=\"navbar navbar-full navbar-light tw-navbar\"><div class=\"container\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#tw-navbar\" class=\"navbar-toggler hidden-sm-up\">&#9776;</button><div id=\"tw-navbar\" class=\"collapse navbar-toggleable-xs\"><a ui-sref=\"home\" class=\"navbar-brand\">TicketWin</a><ul class=\"nav navbar-nav pull-xs-right\"><li class=\"nav-item\"><a href=\"#\" class=\"nav-link\">Contact</a></li><li class=\"nav-item\"><a href=\"#\" class=\"nav-link\">Events</a></li><li class=\"nav-item\"><a ui-sref=\"login\" class=\"nav-link\">Sign in</a></li><li class=\"nav-item\"><a ui-sref=\"signup\" class=\"nav-link\">Sign up</a></li><li class=\"nav-item\"><button class=\"btn btn-success\">New Event</button></li></ul></div></div></nav><!--Logged in--><nav ng-if=\"vm.isAuthenticated\" class=\"navbar navbar-full navbar-light tw-navbar\"><div class=\"container\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#tw-navbar\" class=\"navbar-toggler hidden-sm-up\">&#9776;</button><div id=\"tw-navbar\" class=\"collapse navbar-toggleable-xs\"><a href=\"#\" class=\"navbar-brand\">TicketWin</a><ul class=\"nav navbar-nav pull-xs-right\"><li class=\"nav-item\"><a href=\"#\" class=\"nav-link\">Contact</a></li><li class=\"nav-item\"><a href=\"#\" class=\"nav-link\">Events</a></li><li class=\"nav-item\"><a href=\"#\" class=\"nav-link\">Edit your account</a></li><li class=\"nav-item\"><a href=\"#\" class=\"nav-link\">Sign out</a></li><li class=\"nav-item\"><button class=\"btn btn-danger\">Manage Events</button></li><li class=\"nav-item\"><button class=\"btn btn-success\">New Event</button></li></ul></div></div></nav>");;return buf.join("");
 };
-},{"jade/runtime":28}],4:[function(require,module,exports){
+},{"jade/runtime":30}],4:[function(require,module,exports){
 function twNavbar() {
   function twNavbarCtrl() {
     var vm = this;
@@ -58,9 +58,39 @@ var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
+buf.push("<div class=\"container\"><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><h1 ng-if=\"vm.user\">Account page!</h1></div></div></div>");;return buf.join("");
+};
+},{"jade/runtime":30}],6:[function(require,module,exports){
+module.exports = angular.module("controllers:account", [])
+.controller("AccountController", function(isLoggedIn) {
+  var vm = this;
+  vm.user = isLoggedIn;
+})
+.config(function($stateProvider) {
+  $stateProvider
+    .state("account", {
+      url: "/account",
+      template: require("./account.jade"),
+      controller: "AccountController as vm",
+      resolve: {
+        isLoggedIn: function(Sessions) {
+          return Sessions.isLoggedIn();
+        }
+      }
+    });
+});
+
+},{"./account.jade":5}],7:[function(require,module,exports){
+var jade = require("jade/runtime");
+
+module.exports = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+
 buf.push("<div class=\"container\"><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><h1>Home!</h1><div ng-repeat=\"user in vm.users\"><h3 ng-bind=\"user\"></h3></div></div></div></div>");;return buf.join("");
 };
-},{"jade/runtime":28}],6:[function(require,module,exports){
+},{"jade/runtime":30}],8:[function(require,module,exports){
 module.exports = angular.module("controllers:home", [])
 .controller("HomeController", function(Home) {
   var vm = this;
@@ -75,7 +105,7 @@ module.exports = angular.module("controllers:home", [])
     });
 });
 
-},{"./home.jade":5}],7:[function(require,module,exports){
+},{"./home.jade":7}],9:[function(require,module,exports){
 var jade = require("jade/runtime");
 
 module.exports = function template(locals) {
@@ -85,7 +115,7 @@ var jade_interp;
 
 buf.push("<div class=\"container\"><div class=\"row\"><div class=\"col-md-6 col-md-offset-3\"><form ng-submit=\"vm.signIn()\"><fieldset class=\"form-group\"><label>Email</label><input type=\"text\" ng-model=\"vm.user.email\" placeholder=\"john@email.com\" class=\"form-control\"/></fieldset><fieldset class=\"form-group\"><label>Password</label><input type=\"password\" ng-model=\"vm.user.password\" placeholder=\"*****\" class=\"form-control\"/></fieldset><fieldset class=\"form-group\"><button type=\"submit\" class=\"btn btn-success\">Sign in</button></fieldset><div role=\"alert\" ng-show=\"vm.error\" class=\"alert alert-danger\">{{vm.error}}</div></form></div></div></div>");;return buf.join("");
 };
-},{"jade/runtime":28}],8:[function(require,module,exports){
+},{"jade/runtime":30}],10:[function(require,module,exports){
 module.exports = angular.module("controllers:login", [])
 .controller("LoginController", function($state, Sessions) {
   var vm = this;
@@ -110,14 +140,15 @@ module.exports = angular.module("controllers:login", [])
     });
 });
 
-},{"./login.jade":7}],9:[function(require,module,exports){
+},{"./login.jade":9}],11:[function(require,module,exports){
 module.exports = angular.module("ticketWin:sections", [
   require("./home/home").name,
   require("./login/login").name,
-  require("./signup/signup").name
+  require("./signup/signup").name,
+  require("./account/account").name
 ]);
 
-},{"./home/home":6,"./login/login":8,"./signup/signup":11}],10:[function(require,module,exports){
+},{"./account/account":6,"./home/home":8,"./login/login":10,"./signup/signup":13}],12:[function(require,module,exports){
 var jade = require("jade/runtime");
 
 module.exports = function template(locals) {
@@ -127,7 +158,7 @@ var jade_interp;
 
 buf.push("<div class=\"container\"><div class=\"row\"><div class=\"col-md-6 col-md-offset-3\"><form ng-submit=\"vm.signUp()\"><fieldset class=\"form-group\"><label>Email</label><input type=\"text\" ng-model=\"vm.user.email\" placeholder=\"john@email.com\" class=\"form-control\"/></fieldset><fieldset class=\"form-group\"><label>Password</label><input type=\"password\" ng-model=\"vm.user.password\" placeholder=\"*****\" class=\"form-control\"/></fieldset><fieldset class=\"form-group\"><label>Password Confirmation</label><input type=\"password\" ng-model=\"vm.user.password_confirmation\" placeholder=\"*****\" class=\"form-control\"/></fieldset><fieldset class=\"form-group\"><input type=\"checkbox\" ng-model=\"vm.terms_of_service\" class=\"form-control\"/><label>Terms of Service</label></fieldset><fieldset class=\"form-group\"><button type=\"submit\" class=\"btn btn-success\">Sign up</button></fieldset><div role=\"alert\" ng-show=\"vm.error\" class=\"alert alert-danger\">{{vm.error}}</div></form></div></div></div>");;return buf.join("");
 };
-},{"jade/runtime":28}],11:[function(require,module,exports){
+},{"jade/runtime":30}],13:[function(require,module,exports){
 var ip = require("ip");
 
 module.exports = angular.module("controllers:signup", [])
@@ -164,14 +195,14 @@ module.exports = angular.module("controllers:signup", [])
     });
 });
 
-},{"./signup.jade":10,"ip":27}],12:[function(require,module,exports){
+},{"./signup.jade":12,"ip":29}],14:[function(require,module,exports){
 module.exports = angular.module("ticketWin:services:api", [
     require("./sessions").name,
     require("./users").name,
     require("./home").name
 ]);
 
-},{"./home":13,"./sessions":14,"./users":15}],13:[function(require,module,exports){
+},{"./home":15,"./sessions":16,"./users":17}],15:[function(require,module,exports){
 var _ = require("lodash");
 
 module.exports = angular.module("api:home", [])
@@ -191,9 +222,9 @@ module.exports = angular.module("api:home", [])
   return Home;
 });
 
-},{"lodash":30}],14:[function(require,module,exports){
+},{"lodash":32}],16:[function(require,module,exports){
 module.exports = angular.module("api:sessions", [])
-.factory("Sessions", function($http, $localforage, $q) {
+.factory("Sessions", function($http, $localforage, $q, $state) {
   var API = "http://api.tcktwn.dev:3000/";
   var payload = {};
 
@@ -223,10 +254,21 @@ module.exports = angular.module("api:sessions", [])
     });
   };
 
+  Sessions.isLoggedIn = function() {
+    return $localforage.get("Authorization")
+      .then(function(result) {
+        if (result) {
+          return result;
+        } else {
+          return $state.go("login");
+        }
+      });
+  };
+
   return Sessions;
 });
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = angular.module("api:users", [])
 .factory("Users", function($http, $localforage, $q) {
   var API = "http://api.tcktwn.dev:3000/";
@@ -262,12 +304,12 @@ module.exports = angular.module("api:users", [])
 
 });
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = angular.module("ticketWin:services:interceptor", [
   require("./request-interceptor").name
 ]);
 
-},{"./request-interceptor":17}],17:[function(require,module,exports){
+},{"./request-interceptor":19}],19:[function(require,module,exports){
 module.exports = angular.module("interceptor:request-interceptor", [])
 .factory("httpRequestInterceptor", function($localforage) {
   return {
@@ -281,7 +323,7 @@ module.exports = angular.module("interceptor:request-interceptor", [])
   };
 });
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var localforage = require("localforage");
 
 module.exports = angular.module("localforage:localforage", [])
@@ -303,16 +345,16 @@ module.exports = angular.module("localforage:localforage", [])
   return $localforage;
 });
 
-},{"localforage":29}],19:[function(require,module,exports){
+},{"localforage":31}],21:[function(require,module,exports){
 module.exports = angular.module("ticketWin:services", [
   require("./api/api").name,
   require("./interceptor/interceptor").name,
   require("./localforage/localforage").name
 ]);
 
-},{"./api/api":12,"./interceptor/interceptor":16,"./localforage/localforage":18}],20:[function(require,module,exports){
+},{"./api/api":14,"./interceptor/interceptor":18,"./localforage/localforage":20}],22:[function(require,module,exports){
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -1865,7 +1907,7 @@ function blitBuffer (src, dst, offset, length) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"base64-js":22,"ieee754":23,"isarray":24}],22:[function(require,module,exports){
+},{"base64-js":24,"ieee754":25,"isarray":26}],24:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -1991,7 +2033,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -2077,14 +2119,14 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -2131,7 +2173,7 @@ exports.tmpdir = exports.tmpDir = function () {
 
 exports.EOL = '\n';
 
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2224,7 +2266,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 var ip = exports;
@@ -2638,7 +2680,7 @@ ip.fromLong = function fromInt(ipl) {
       (ipl & 255) );
 };
 
-},{"buffer":21,"os":25}],28:[function(require,module,exports){
+},{"buffer":23,"os":27}],30:[function(require,module,exports){
 (function (global){
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jade = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
@@ -2894,7 +2936,7 @@ exports.DebugItem = function DebugItem(lineno, filename) {
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"fs":20}],29:[function(require,module,exports){
+},{"fs":22}],31:[function(require,module,exports){
 (function (process,global){
 /*!
     localForage -- Offline Storage, Improved
@@ -5754,7 +5796,7 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"_process":26}],30:[function(require,module,exports){
+},{"_process":28}],32:[function(require,module,exports){
 (function (global){
 /**
  * @license
