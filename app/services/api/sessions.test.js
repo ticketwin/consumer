@@ -12,6 +12,11 @@ describe("Sessions Service", function() {
     status: 200
   };
   var res_localstorage = "TCKTWN1337";
+  var res_state = {
+    name: "login",
+    url: "/login",
+    controller: "LoginController as vm"
+  };
 
   beforeEach(angular.mock.module("ticketWin"));
 
@@ -22,12 +27,6 @@ describe("Sessions Service", function() {
     $localforage = _$localforage_;
     $scope = $rootScope.$new();
   }));
-
-  beforeEach(function() {
-    spyOn($localforage, "get").and.callFake(function() {
-      return q.when(res_localstorage);
-    });
-  });
 
   it("should exist", function() {
     expect(SessionsFactory).toBeDefined();
@@ -42,6 +41,9 @@ describe("Sessions Service", function() {
     beforeEach(function() {
       result = {};
       sessionsResponse = {};
+      spyOn($localforage, "get").and.callFake(function() {
+        return q.when(res_localstorage);
+      });
       spyOn(SessionsFactory, "create").and.callThrough();
     });
 
@@ -101,6 +103,9 @@ describe("Sessions Service", function() {
     var result;
 
     beforeEach(function() {
+      spyOn($localforage, "get").and.callFake(function() {
+        return q.when(res_localstorage);
+      });
       deferred = q.defer();
       spyOn(SessionsFactory, "login").and.callThrough();
       spyOn(SessionsFactory, "create").and.callFake(function() {
@@ -136,6 +141,9 @@ describe("Sessions Service", function() {
     });
 
     it("should return a key when a key is present", function() {
+      spyOn($localforage, "get").and.callFake(function() {
+        return q.when(res_localstorage);
+      });
       expect(SessionsFactory.isLoggedIn).not.toHaveBeenCalled();
       expect($localforage.get).not.toHaveBeenCalled();
 
@@ -148,6 +156,27 @@ describe("Sessions Service", function() {
       expect(SessionsFactory.isLoggedIn).toHaveBeenCalled();
       expect($localforage.get).toHaveBeenCalled();
       expect(result).toEqual("TCKTWN1337");
+    });
+
+    it("should redirect to /login when a key isn't present", function() {
+      spyOn($localforage, "get").and.callFake(function() {
+        return q.when('');
+      });
+      expect(SessionsFactory.isLoggedIn).not.toHaveBeenCalled();
+      expect($localforage.get).not.toHaveBeenCalled();
+
+      SessionsFactory.isLoggedIn()
+      .then(function(res) {
+        result = res;
+      });
+      $scope.$apply();
+
+      expect(SessionsFactory.isLoggedIn).toHaveBeenCalled();
+      expect($localforage.get).toHaveBeenCalled();
+
+      expect(result.name).toEqual(res_state.name);
+      expect(result.url).toEqual(res_state.url);
+      expect(result.controller).toEqual(res_state.controller);
     });
   });
 });
