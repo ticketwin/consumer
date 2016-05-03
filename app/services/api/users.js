@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 module.exports = angular.module("api:users", [])
 .factory("Users", function($http, $localforage, $q) {
   var API = "http://api.tcktwn.dev:3000/";
@@ -6,8 +8,8 @@ module.exports = angular.module("api:users", [])
   var Users = {};
 
   Users.create = function(data) {
-    payload.users = {};
-    payload.users = data;
+    _.set(payload, "users", data);
+
     return $http.post(API + "users", payload)
     .then(function(response) {
       return response.data;

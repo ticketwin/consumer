@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 module.exports = angular.module("api:sessions", [])
 .factory("Sessions", function($http, $localforage, $q, $state) {
   var API = "http://api.tcktwn.dev:3000/";
@@ -6,8 +8,8 @@ module.exports = angular.module("api:sessions", [])
   var Sessions = {};
 
   Sessions.create = function(data) {
-    payload.sessions = {};
-    payload.sessions = data;
+    _.set(payload, "sessions", data);
+
     return $http.post(API + "sessions", payload)
     .then(function(response) {
       return response.data;
